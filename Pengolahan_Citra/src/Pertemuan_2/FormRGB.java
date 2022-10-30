@@ -26,6 +26,8 @@ public class FormRGB extends javax.swing.JFrame {
      */
     public FormRGB() {
         initComponents();
+        // menampilkan jframe dalam ful screen
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
     public static BufferedImage loadImage(String ref) {

@@ -28,6 +28,8 @@ public class GrayScale extends javax.swing.JFrame {
      */
     public GrayScale() {
         initComponents();
+         // menampilkan jframe dalam ful screen
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
     public static BufferedImage loadImage(String ref) {
@@ -73,9 +75,9 @@ public class GrayScale extends javax.swing.JFrame {
                 int merahg = (rgb >> 16) & 0xff;
                 int hijaug = (rgb >> 8) & 0xff;
                 int birug = (rgb >> 0) & 0xff;
-//                float gray = (float) ((0.5 * merahg) + (0.3 * hijaug) + (0.2 * birug));
-                float gray = (float) (merahg + hijaug + birug);
-                raster.setSample(x, y, 255, gray);
+                float gray = (float) ((0.5 * merahg) + (0.3 * hijaug) + (0.2 * birug));
+//                float gray = (float) (merahg + hijaug + birug);
+                raster.setSample(x, y, 0, gray);
             }
         }
         return prosesGambar;
@@ -200,6 +202,7 @@ public class GrayScale extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Membuat fungsi untuk membuka atau mencari gambar pada komputer
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         JFileChooser jfc = new JFileChooser();
@@ -214,7 +217,7 @@ public class GrayScale extends javax.swing.JFrame {
             tampil_output.setIcon(imageIcon2);
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    // Fungsi untuk conversi ke GrayScale
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         BufferedImage bi = rgb2Gray(Sumber);
