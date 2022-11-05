@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Pertemuan_4;
+package Praktikum_5;
 
+import Pertemuan_4.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,14 +27,14 @@ import org.jfree.data.category.DefaultCategoryDataset;
  *
  * @author zaki
  */
-public class Histogram extends javax.swing.JFrame {
+public class BrightnessContrast extends javax.swing.JFrame {
 
     String sumber;
 
     /**
      * Creates new form NewJFrame
      */
-    public Histogram() {
+    public BrightnessContrast() {
         initComponents();
     }
 
@@ -129,6 +130,113 @@ public class Histogram extends javax.swing.JFrame {
         String status = frame.getTitle();
     }
 
+    public BufferedImage brigthness(String sumber, int cerah) {
+        BufferedImage prosesGambar;
+        BufferedImage loadIng = loadImage(sumber);
+        int ukuranX = loadIng.getWidth();
+        int ukuranY = loadIng.getHeight();
+        prosesGambar = new BufferedImage(ukuranX, ukuranY,
+                BufferedImage.TYPE_INT_RGB);
+        Graphics g = prosesGambar.getGraphics();
+        g.drawImage(loadIng, 0, 0, null);
+        WritableRaster raster = prosesGambar.getRaster();
+        for (int x = 0; x < ukuranX; x++) {
+            for (int y = 0; y < ukuranY; y++) {
+                int rgb = loadIng.getRGB(x, y);
+                int alpha = (rgb << 24) & 0xff;
+                int merahg = (rgb >> 16) & 0xff;
+                int hijaug = (rgb >> 8) & 0xff;
+                int birug = (rgb >> 0) & 0xff;
+                int gray = ((merahg) + (hijaug) + (birug)) / 3;
+                int merah2 = merahg + cerah;
+                int hijau2 = hijaug + cerah;
+                int biru2 = birug + cerah;
+                if (merah2 < 0) {
+                    merah2 = 0;
+                }
+                if (hijau2 < 0) {
+                    hijau2 = 0;
+                }
+                if (biru2 < 0) {
+                    biru2 = 0;
+                }
+                if (merah2 > 255) {
+                    merah2 = 255;
+                }
+                if (hijau2 > 255) {
+                    hijau2 = 255;
+                }
+                if (biru2 > 255) {
+                    biru2 = 255;
+                }
+                int rgb2 = alpha | merah2 << 16 | hijau2 << 8 | biru2;
+                prosesGambar.setRGB(x, y, rgb2);
+            }
+        }
+        return prosesGambar;
+    }
+
+    public BufferedImage kontras(String sumber, int kontras) {
+        
+            BufferedImage prosesGambar;
+            BufferedImage loadIng = loadImage(sumber);
+            int ukuranX = loadIng.getWidth();
+            int ukuranY = loadIng.getHeight();
+            prosesGambar = new BufferedImage(ukuranX, ukuranY,
+                    BufferedImage.TYPE_INT_RGB);
+            Graphics g = prosesGambar.getGraphics();
+            g.drawImage(loadIng, 0, 0, null);
+            WritableRaster raster = prosesGambar.getRaster();
+            for (int x = 0; x < ukuranX; x++) {
+                for (int y = 0; y < ukuranY; y++) {
+                    int rgb = loadIng.getRGB(x, y);
+                    int alpha = (rgb << 24) & 0xff;
+                    int merahg = (rgb >> 16) & 0xff;
+                    int hijaug = (rgb >> 8) & 0xff;
+                    int birug = (rgb >> 0) & 0xff;
+                    int gray = ((merahg) + (hijaug) + (birug)) / 3;
+                    int merah2 = 0, hijau2 = 0, biru2 = 0;
+                    if (merahg > 128) {
+                        merah2 = merahg + kontras;
+                    } else {
+                        merah2 = merahg - kontras;
+                    }
+                    if (hijaug > 128) {
+                        hijau2 = hijaug + kontras;
+                    } else {
+                        hijau2 = hijaug - kontras;
+                    }
+                    if (birug > 128) {
+                        biru2 = birug + kontras;
+                    } else {
+                        biru2 = birug + kontras;
+                    }
+                    if (merah2 < 0) {
+                        merah2 = 0;
+                    }
+                    if (hijau2 < 0) {
+                        hijau2 = 0;
+                    }
+                    if (biru2 < 0) {
+                        biru2 = 0;
+                    }
+                    if (merah2 > 255) {
+                        merah2 = 255;
+                    }
+                    if (hijau2 > 255) {
+                        hijau2 = 255;
+                    }
+                    if (biru2 > 255) {
+                        biru2 = 255;
+                    }
+                    int rgb2 = alpha | merah2 << 16 | hijau2 << 8 | biru2;
+                    prosesGambar.setRGB(x, y, rgb2);
+                }
+            }
+            return prosesGambar;
+        
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -144,6 +252,10 @@ public class Histogram extends javax.swing.JFrame {
         tampil_input = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         tampil_output = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollBar1 = new javax.swing.JScrollBar();
+        jScrollBar2 = new javax.swing.JScrollBar();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -190,6 +302,28 @@ public class Histogram extends javax.swing.JFrame {
             .addComponent(tampil_output, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
         );
 
+        jLabel3.setText("Pengaturan Brightness");
+
+        jLabel4.setText("Pengaturan Contrast");
+
+        jScrollBar1.setMaximum(255);
+        jScrollBar1.setMinimum(-255);
+        jScrollBar1.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        jScrollBar1.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
+            public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
+                jScrollBar1AdjustmentValueChanged(evt);
+            }
+        });
+
+        jScrollBar2.setMaximum(128);
+        jScrollBar2.setMinimum(-128);
+        jScrollBar2.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        jScrollBar2.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
+            public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
+                jScrollBar2AdjustmentValueChanged(evt);
+            }
+        });
+
         jMenu1.setText("File");
 
         jMenuItem1.setText("Open");
@@ -234,20 +368,42 @@ public class Histogram extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(22, 22, 22))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jScrollBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addContainerGap()))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jScrollBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
@@ -292,6 +448,23 @@ public class Histogram extends javax.swing.JFrame {
         drawHistogram(loadImg, sumber);
     }//GEN-LAST:event_histogramActionPerformed
 
+    private void jScrollBar1AdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_jScrollBar1AdjustmentValueChanged
+        // TODO add your handling code here:
+        int cerah = jScrollBar1.getValue();
+        BufferedImage bi = brigthness(sumber, cerah);
+        ImageIcon imageicon = new ImageIcon(resize(bi, tampil_output.getWidth(), tampil_output.getHeight()));
+        tampil_output.setIcon(imageicon);
+
+    }//GEN-LAST:event_jScrollBar1AdjustmentValueChanged
+
+    private void jScrollBar2AdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_jScrollBar2AdjustmentValueChanged
+        // TODO add your handling code here:
+        int kont = jScrollBar1.getValue();
+        BufferedImage ctrs = kontras(sumber, kont);
+        ImageIcon imageicon = new ImageIcon(resize(ctrs, tampil_output.getWidth(), tampil_output.getHeight()));
+        tampil_output.setIcon(imageicon);
+    }//GEN-LAST:event_jScrollBar2AdjustmentValueChanged
+
     /**
      * @param args the command line arguments
      */
@@ -309,14 +482,22 @@ public class Histogram extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Histogram.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BrightnessContrast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Histogram.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BrightnessContrast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Histogram.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BrightnessContrast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Histogram.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BrightnessContrast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -329,7 +510,7 @@ public class Histogram extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Histogram().setVisible(true);
+                new BrightnessContrast().setVisible(true);
             }
         });
     }
@@ -338,6 +519,8 @@ public class Histogram extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem histogram;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -345,6 +528,8 @@ public class Histogram extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JScrollBar jScrollBar2;
     private javax.swing.JLabel tampil_input;
     private javax.swing.JLabel tampil_output;
     private javax.swing.JMenu view;
